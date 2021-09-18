@@ -16,7 +16,6 @@ public class Movie {
     private Long id;
     private String title;
     private Double rate;
-    @Lob
     private String description;
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate = new Date();
