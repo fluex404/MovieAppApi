@@ -18,5 +18,5 @@ git clone https://github.com/fluex404/MovieApp
 cd MovieApp
 ```
 ```sh 
-maven spring-boot:run
+mvn spring-boot:run
 ```
