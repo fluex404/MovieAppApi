@@ -37,6 +37,21 @@ public class InitData implements CommandLineRunner {
         Movie test2Movie = new Movie("Test 2", 8.2, "ini description", "https://www.wallpaperkiss.com/wimg/b/124-1244700_big.jpg");
         Movie test3Movie = new Movie("Test 3", 8.0, "ini description", "https://www.wallpaperkiss.com/wimg/b/124-1244700_big.jpg");
 
+
+
+        categoryRepository.save(comedyCategory);
+        categoryRepository.save(actionCategory);
+        categoryRepository.save(romanceCategory);
+        categoryRepository.save(animeCategory);
+        categoryRepository.save(horrorCategory);
+
+        movieRepository.save(aladinMovie);
+        movieRepository.save(xmanMovie);
+        movieRepository.save(test1Movie);
+        movieRepository.save(test2Movie);
+        movieRepository.save(test3Movie);
+
+
         List<MovieCategory> aladinCategories = Arrays.asList(
                 new MovieCategory(aladinMovie, comedyCategory),
                 new MovieCategory(aladinMovie, actionCategory),
@@ -57,19 +72,6 @@ public class InitData implements CommandLineRunner {
                 new MovieCategory(test1Movie, romanceCategory),
                 new MovieCategory(test1Movie, horrorCategory)
         );
-
-        categoryRepository.save(comedyCategory);
-        categoryRepository.save(actionCategory);
-        categoryRepository.save(romanceCategory);
-        categoryRepository.save(animeCategory);
-        categoryRepository.save(horrorCategory);
-
-        movieRepository.save(aladinMovie);
-        movieRepository.save(xmanMovie);
-        movieRepository.save(test1Movie);
-        movieRepository.save(test2Movie);
-        movieRepository.save(test3Movie);
-
         movieCategoryRepository.saveAll(xmanCategories);
         movieCategoryRepository.saveAll(aladinCategories);
         movieCategoryRepository.saveAll(test1Categories);
