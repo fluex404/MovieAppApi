@@ -25,4 +25,4 @@ mvn spring-boot:run
 
 ## Explanation List API
 
-to see list of api, u can see on this link (http://localhost:8080/swagger-ui.html
+to see list of api, u can see on this link http://localhost:8080/swagger-ui.html
