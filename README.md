@@ -17,6 +17,9 @@ Run project
 ```sh 
 cd MovieApp
 ```
+
 ```sh 
 mvn spring-boot:run
 ```
+
+## Explanation List API
