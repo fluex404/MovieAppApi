@@ -1,6 +1,7 @@
 ## Requirements
 * java 11
 * maven
+* postgresql
 * docker(optinal, if you not want to install db in your device manually)
 * text editor: intelliJ, STS, eclipse
 
@@ -23,3 +24,5 @@ mvn spring-boot:run
 ```
 
 ## Explanation List API
+
+to see list of api, u can see on this link (http://localhost:8080/swagger-ui.html
