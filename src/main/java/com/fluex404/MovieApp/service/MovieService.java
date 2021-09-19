@@ -7,6 +7,8 @@ import com.fluex404.MovieApp.entity.Category;
 import com.fluex404.MovieApp.entity.Movie;
 import com.fluex404.MovieApp.entity.MovieCategory;
 import com.fluex404.MovieApp.exception.CustomException;
+import com.fluex404.MovieApp.repository.CategoryRepository;
+import com.fluex404.MovieApp.repository.MovieCategoryRepository;
 import com.fluex404.MovieApp.repository.MovieRepository;
 import com.fluex404.MovieApp.response.BaseListResponse;
 import com.fluex404.MovieApp.response.MovieDetailResponse;
@@ -39,6 +41,10 @@ public class MovieService {
     private MyUtils myUtils;
     @PersistenceContext
     private EntityManager entityManager;
+    @Autowired
+    private CategoryRepository categoryRepository;
+    @Autowired
+    private MovieCategoryRepository movieCategoryRepository;
 
     @Transactional
     public Movie saveOrUpdate(MovieDto data) throws CustomException {
@@ -63,7 +69,13 @@ public class MovieService {
 
         /** category **/
         for (Long categoryId : data.getCategories()) {
+            Optional<Category> categoryOptional = categoryRepository.findById(categoryId);
+            if(!categoryOptional.isPresent()) {
+                throw new CustomException("categoryId: "+categoryId+" not found!", HttpStatus.NOT_FOUND);
+            }
+            Category category = categoryOptional.get();
 
+            movieCategoryRepository.save(new MovieCategory(m, category));
         }
 
         return m;
