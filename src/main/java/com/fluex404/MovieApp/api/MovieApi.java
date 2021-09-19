@@ -36,7 +36,7 @@ public class MovieApi {
     }
 
     @PostMapping("/detail/{movieId}")
-    public ResponseEntity detail() throws CustomException {
-        return ResponseEntity.ok(null);
+    public ResponseEntity detail(@PathVariable("movieId") Long movieId) throws CustomException {
+        return ResponseEntity.ok(movieService.detail(movieId));
     }
 }

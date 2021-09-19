@@ -26,11 +26,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Join;
 import javax.transaction.Transactional;
-import java.util.Base64;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class MovieService {
@@ -128,6 +127,27 @@ public class MovieService {
             throw new CustomException("movieId: "+movieId+" not found!", HttpStatus.NOT_FOUND);
         }
 
-        return new MovieDetailResponse();
+        MovieDetailResponse m = new MovieDetailResponse();
+
+        Movie movie = optional.get();
+
+        m.setMovie(movie);
+
+        List<Long> categoryIds = new ArrayList<>();;
+        for (MovieCategory mc : movie.getMovieCategories()) {
+            categoryIds.add(mc.getCategory().getId());
+        }
+
+        Specification filterCategory = (root, criteriaQuery, criteriaBuilder) -> {
+            Join<MovieCategory, Movie> movieCategoryJoin = root.join("movieCategories");
+            Join<Category, MovieCategory> categoryJoin = movieCategoryJoin.join("category");
+
+            return criteriaQuery.where(categoryJoin.get("id").in(categoryIds)).groupBy(root.get("id")).getRestriction();
+        };
+
+        m.setRecomends(movieRepository.findAll(filterCategory, Sort.by("rate").descending()));
+
+
+        return m;
     }
 }
