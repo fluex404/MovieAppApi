@@ -28,8 +28,11 @@ mvn spring-boot:run
 ## API CATEGORY 
 
 * /api/v1/category/saveOrUpdate
+
 Method: POST
+
 Request Body: 
+
 ```JSON
 {
   "id": 6,
@@ -41,12 +44,15 @@ api ini digunakan untuk create atau update category, jika ingin create id nya se
 * /api/v1/category/delete/{categoryId}
 
 Method: DELETE
+
 api ini digunakan untuk delete category by id,
  
 * /api/v1/category/search
     
 Method: POST
+
 Request Body:
+
 ```JSON 
 {
    "data": "",
@@ -63,8 +69,11 @@ untuk sortBy itu menggunakan key pada response json yang ingin di sorting.
 ## API MOVIE
 
 * /api/v1/movie/saveOrUpdate 
+
 Method: POST
+
 Request Body:
+
 ```sh 
 {
   "categories": [
@@ -85,16 +94,21 @@ jika update idnya beri movie id yang ingin diupdate.
 * /api/v1/movie/delete/{movieId} 
 
 Method: DELETE
+
 ini api untuk delete movie by id
   
 * /api/v1/movie/detail/{movieId}
 
 Method: POST
+
 ini api untuk liat detail movie by id movie
   
 * /api/v1/movie/search
+
 Method: POST
+
 Request Body: 
+
 ```JSON 
 {
   "data": {
