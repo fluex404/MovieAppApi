@@ -11,19 +11,19 @@ import java.io.IOException;
 
 @Component
 public class MyUtils {
-    public String upload(MultipartFile file, Long movieId) throws CustomException {
+    public String upload(byte imageBytes[], String imageName, Long movieId) throws CustomException {
         File fileTarget = new File("upload/"+movieId+"/");
 
         if(!fileTarget.exists())
             fileTarget.mkdirs();
 
-        fileTarget = new File(fileTarget.getPath()+"/"+file.getOriginalFilename());
+        fileTarget = new File(fileTarget.getPath()+"/"+imageName);
 
         try {
 
-            System.out.println(file.getBytes());
+            System.out.println(imageBytes);
 
-            FileUtils.writeByteArrayToFile(fileTarget, file.getBytes());
+            FileUtils.writeByteArrayToFile(fileTarget, imageBytes);
         } catch (IOException e) {
             throw new CustomException("upload image failed!", HttpStatus.INTERNAL_SERVER_ERROR);
         }
