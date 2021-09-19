@@ -7,6 +7,7 @@ import com.fluex404.MovieApp.entity.Movie;
 import com.fluex404.MovieApp.exception.CustomException;
 import com.fluex404.MovieApp.repository.MovieRepository;
 import com.fluex404.MovieApp.response.BaseListResponse;
+import com.fluex404.MovieApp.response.MovieDetailResponse;
 import com.fluex404.MovieApp.utils.MyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,9 +15,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +32,7 @@ public class MovieService {
     @Autowired
     private MyUtils myUtils;
 
+    @Transactional
     public Movie saveOrUpdate(MovieDto data) throws CustomException {
         Movie m = new Movie();
         Optional<Movie> optional = movieRepository.findById(data.getId());
@@ -50,7 +54,9 @@ public class MovieService {
 
 
         /** category **/
+        for (Long categoryId : data.getCategories()) {
 
+        }
 
         return m;
     }
@@ -89,5 +95,12 @@ public class MovieService {
         b.setTotalElements(page.getTotalElements());
 
         return b;
+    }
+    public MovieDetailResponse detail(Long movieId) throws CustomException {
+        Optional<Movie> optional = movieRepository.findById(movieId);
+
+        if(!optional.isPresent()) {
+            throw new CustomException("movieId: "+movieId+" not found!", HttpStatus.NOT_FOUND);
+        }
     }
 }

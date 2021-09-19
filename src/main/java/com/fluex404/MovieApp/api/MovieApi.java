@@ -34,4 +34,9 @@ public class MovieApi {
     public ResponseEntity findAll(@RequestBody BaseListDto<MovieSearchDto> data) throws CustomException {
         return ResponseEntity.ok(movieService.search(data));
     }
+
+    @PostMapping("/detail/{movieId}")
+    public ResponseEntity detail() throws CustomException {
+
+    }
 }
