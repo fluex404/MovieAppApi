@@ -1,10 +1,13 @@
 package com.fluex404.MovieApp.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "movie")
@@ -21,6 +24,10 @@ public class Movie {
     private Date createdDate = new Date();
     @Column(name = "image_url")
     private String imageUrl;
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Set<MovieCategory> movieCategories;
+
     public Movie() {
     }
 

@@ -3,7 +3,9 @@ package com.fluex404.MovieApp.service;
 import com.fluex404.MovieApp.dto.BaseListDto;
 import com.fluex404.MovieApp.dto.MovieDto;
 import com.fluex404.MovieApp.dto.MovieSearchDto;
+import com.fluex404.MovieApp.entity.Category;
 import com.fluex404.MovieApp.entity.Movie;
+import com.fluex404.MovieApp.entity.MovieCategory;
 import com.fluex404.MovieApp.exception.CustomException;
 import com.fluex404.MovieApp.repository.MovieRepository;
 import com.fluex404.MovieApp.response.BaseListResponse;
@@ -16,9 +18,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
+import org.springframework.orm.jpa.EntityManagerFactoryAccessor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.Join;
 import javax.transaction.Transactional;
 import java.util.Base64;
 import java.util.List;
@@ -31,6 +37,8 @@ public class MovieService {
     private MovieRepository movieRepository;
     @Autowired
     private MyUtils myUtils;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Transactional
     public Movie saveOrUpdate(MovieDto data) throws CustomException {
@@ -74,14 +82,19 @@ public class MovieService {
                 (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.like(root.get("description"), "%"+data.getData().getQuery()+"%");
         Specification filterTitle =
                 (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.like(root.get("title"), "%"+data.getData().getQuery()+"%");
-        Specification filterRate = null;
+        Specification filterCategory = null;
 
-        if(data.getData().getRate() != null && data.getData().getRate() != 0)
-            filterRate = (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("rate"), data.getData().getRate());
+        if(data.getData().getCategoryId() != null && data.getData().getCategoryId() != 0) {
+            filterCategory = (root, criteriaQuery, criteriaBuilder) -> {
+                Join<MovieCategory, Movie> joinMovieCategory = root.join("movieCategories");
+                Join<Category, MovieCategory> joinCategory = joinMovieCategory.join("category");
+                return criteriaBuilder.equal(joinCategory.get("id"), data.getData().getCategoryId());
+            };
+        }
 
         Page page = movieRepository.findAll(
                 Specification.where(filterDescription.or(filterTitle))
-                        .and(filterRate),
+                        .and(filterCategory),
                 pageable
         );
 
@@ -102,5 +115,7 @@ public class MovieService {
         if(!optional.isPresent()) {
             throw new CustomException("movieId: "+movieId+" not found!", HttpStatus.NOT_FOUND);
         }
+
+        return new MovieDetailResponse();
     }
 }

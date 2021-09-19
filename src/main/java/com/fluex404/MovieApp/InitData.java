@@ -69,8 +69,8 @@ public class InitData implements CommandLineRunner {
                 new MovieCategory(test2Movie, horrorCategory)
         );
         List<MovieCategory> test3Categories = Arrays.asList(
-                new MovieCategory(test1Movie, romanceCategory),
-                new MovieCategory(test1Movie, horrorCategory)
+                new MovieCategory(test3Movie, romanceCategory),
+                new MovieCategory(test3Movie, horrorCategory)
         );
         movieCategoryRepository.saveAll(xmanCategories);
         movieCategoryRepository.saveAll(aladinCategories);

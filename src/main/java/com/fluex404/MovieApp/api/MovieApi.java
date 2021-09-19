@@ -37,6 +37,6 @@ public class MovieApi {
 
     @PostMapping("/detail/{movieId}")
     public ResponseEntity detail() throws CustomException {
-
+        return ResponseEntity.ok(null);
     }
 }

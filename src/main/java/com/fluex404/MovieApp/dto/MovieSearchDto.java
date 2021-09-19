@@ -6,6 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class MovieSearchDto {
-    private Double rate;
+    private Long categoryId;
     private String query;
 }
